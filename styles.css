@@ -1,0 +1,458 @@
+ :root {
+            --primary: #f27f0d;
+            --background-light: #f8f7f5;
+            --background-dark: #0a192f;
+            --text-white: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --border-primary-10: rgba(242, 127, 13, 0.1);
+            --border-primary-20: rgba(242, 127, 13, 0.2);
+            --border-primary-30: rgba(242, 127, 13, 0.3);
+            --bg-white-5: rgba(255, 255, 255, 0.05);
+            --shadow-primary: 0 10px 15px -3px rgba(242, 127, 13, 0.2), 0 4px 6px -4px rgba(242, 127, 13, 0.1);
+            --shadow-hover: 0 20px 25px -5px rgba(242, 127, 13, 0.3), 0 8px 10px -6px rgba(242, 127, 13, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            /* Support for modern CSS Scroll-Spy */
+            scroll-timeline: --page-scroll block;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        @media (min-width: 640px) { .container { padding: 0 1.5rem; } }
+        @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+
+        /* Header & Pure CSS Scroll-Spy Highlights */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-primary-10);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 4rem;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        #menu-toggle { display: none; }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.7);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        /* 
+           PURE CSS SCROLL SPY EFFECT 
+           Using view-timeline on sections to detect visibility in viewport
+        */
+        section {
+            view-timeline-name: --section-visible;
+            view-timeline-axis: block;
+        }
+
+        /* Specific timelines for each section to link with nav items */
+        #hero { view-timeline-name: --hero-tl; }
+        #about { view-timeline-name: --about-tl; }
+        #skills { view-timeline-name: --skills-tl; }
+        #projects { view-timeline-name: --projects-tl; }
+        #contact { view-timeline-name: --contact-tl; }
+
+        /* Animation Keyframes to trigger the highlight */
+        @keyframes highlight-nav {
+            0%, 100% { 
+                color: var(--primary);
+            }
+            0%, 100% {
+                --nav-underline-width: 100%;
+            }
+        }
+
+        /* Link animation to the section view timeline */
+        /* Note: browser support for animation-timeline on sibling/parent targets is growing.
+           We use the most robust fallback-ready CSS Scroll Spy method via pseudo-state logic 
+           complemented by standard hover states. */
+
+        /* Fallback: Active Target highlighting */
+        .nav-link:hover::after,
+        .nav-link:active::after {
+            width: 100%;
+        }
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        /* Scroll-Spy highlighting based on :target (standard pure CSS) */
+        body:has(#hero:target) a[href="#hero"]::after,
+        body:has(#about:target) a[href="#about"]::after,
+        body:has(#skills:target) a[href="#skills"]::after,
+        body:has(#projects:target) a[href="#projects"]::after,
+        body:has(#contact:target) a[href="#contact"]::after {
+            width: 100%;
+        }
+        
+        body:has(#hero:target) a[href="#hero"],
+        body:has(#about:target) a[href="#about"],
+        body:has(#skills:target) a[href="#skills"],
+        body:has(#projects:target) a[href="#projects"],
+        body:has(#contact:target) a[href="#contact"] {
+            color: var(--primary);
+        }
+
+        @media (max-width: 767px) {
+            .nav-links { display: none; }
+            .menu-btn-label { display: block; cursor: pointer; color: white; }
+            #menu-toggle:checked ~ .nav-links {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 4rem;
+                left: 0;
+                width: 100%;
+                background: var(--background-dark);
+                padding: 1rem;
+                border-bottom: 1px solid var(--border-primary-10);
+            }
+        }
+        @media (min-width: 768px) {
+            .menu-btn-label { display: none; }
+        }
+
+        /* Hero & Profile Image */
+        .hero {
+            padding: 8rem 0 6rem;
+            scroll-margin-top: 4rem;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (min-width: 864px) {
+            .hero-content { flex-direction: row; text-align: left; }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title .highlight { color: var(--primary); }
+
+        .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; }
+
+        /* Enhanced Button Hover Effects */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            padding: 0.75rem 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--background-dark);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--border-primary-20);
+            color: var(--text-white);
+            background: none;
+        }
+
+        /* Profile Image */
+        .profile-frame {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 6px solid var(--border-primary-20);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .profile-frame:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(242, 127, 13, 0.4);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Sections */
+        section { padding: 6rem 0; scroll-margin-top: 4rem; }
+        
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        #about .section-title {
+            border-bottom: none;
+        }
+
+        /* Skills - 5% Grow Hover */
+        .skills-section { background-color: rgba(242, 127, 13, 0.03); }
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+        
+        .skill-pill {
+            display: flex;
+            height: 3.5rem;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-primary-10);
+            background-color: var(--bg-white-5);
+            transition: all 0.2s ease;
+            cursor: default;
+        }
+
+        .skill-pill:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+            background-color: rgba(242, 127, 13, 0.1);
+        }
+
+        .skill-icon { color: var(--primary); font-size: 20px; }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background-color: var(--bg-white-5);
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid var(--border-primary-10);
+            transition: border-color 0.3s;
+        }
+
+        .project-card:hover { border-color: var(--border-primary-30); }
+
+        .project-img-box { aspect-ratio: 16/9; overflow: hidden; }
+        .project-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .project-card:hover .project-img { transform: scale(1.08); }
+
+        .project-info { padding: 1.5rem; }
+        .project-name { font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .project-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6; }
+
+        .btn-view-project {
+            width: 100%;
+            background-color: var(--primary);
+            color: var(--background-dark);
+            padding: 0.75rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-view-project:hover {
+            background-color: #d16d0b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(242, 127, 13, 0.3);
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+        @media (min-width: 768px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
+
+        .contact-info { display: flex; flex-direction: column; gap: 2rem; }
+        
+        .contact-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 1.25rem;
+            transition: transform 0.3s ease;
+        }
+
+        .icon-box {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 1rem;
+            background-color: rgba(242, 127, 13, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover .icon-box {
+            background-color: var(--primary);
+            color: var(--background-dark);
+            transform: scale(1.1);
+        }
+
+        .contact-item:hover {
+            transform: translateX(8px);
+        }
+
+        .social-links { display: flex; gap: 1rem; margin-top: 1rem; }
+        .social-link {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            border: 1px solid var(--border-primary-20);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .social-link:hover { background-color: var(--primary); color: var(--background-dark); transform: translateY(-3px); }
+        .social-link svg { width: 24px; height: 24px; fill: currentColor; }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+        .form-control {
+            width: 100%;
+            background-color: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-primary-20);
+            padding: 0.875rem 1rem;
+            color: white;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .form-control:focus { border-color: var(--primary); }
+
+        .btn-send {
+            width: 100%;
+            background-color: var(--primary);
+            color: var(--background-dark);
+            padding: 1rem;
+            font-weight: 800;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-primary);
+        }
+
+        .btn-send:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border-primary-10);
+        }
+        .footer-name { color: var(--primary); font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; }
+        .copyright { color: var(--text-muted); font-size: 0.875rem; }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            background-color: var(--primary);
+            color: var(--background-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        .back-to-top:hover { transform: scale(1.1) translateY(-5px); }
